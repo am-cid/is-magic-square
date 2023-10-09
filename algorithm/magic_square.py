@@ -6,8 +6,8 @@ from utils.message import Log
 class Magic_Square:
     """
     This class allows you to read and process magic squares from a text file, check if they are valid magic squares, and print them with color-coded elements.
-    
-    Magic squares are square grids filled with distinct numbers in such a way that the sums of the numbers in each row, column, and diagonal are the same.
+
+    Magic squares are square grids filled with distinct numbers in such a way that the sums of the numbers in each row, column, and diagonal (the 2 main ones) are the same.
 
     This will take in any size square but will warn users if the size of the sides of the square is not odd (this will not affect whether the magic square is valid or not)
     """
