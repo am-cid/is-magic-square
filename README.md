@@ -4,7 +4,7 @@
 ### example text file:
 ```
 8 1 6
-3 5	7
+3 5 7
 4 9 2
 ```
 - *values are separated by whitespace/s*
