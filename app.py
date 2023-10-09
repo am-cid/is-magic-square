@@ -1,12 +1,6 @@
 from pathlib import Path
+from sys import argv
 from algorithm.magic_square import Magic_Square
-
-def main():
-    text_file_path, print_command = parse_args(argv[1:])
-    magic = Magic_Square(text_file_path)
-
-    if print_command:
-        magic.print_magic_square()
 
 def parse_args(argv: list[str] = None) -> tuple[Path, bool]:
     """
@@ -59,4 +53,8 @@ def parse_args(argv: list[str] = None) -> tuple[Path, bool]:
     return file_path, print_command
 
 if __name__ == "__main__":
-    main()
+    text_file_path, print_command = parse_args(argv[1:])
+    magic = Magic_Square(text_file_path)
+
+    if print_command:
+        magic.print_magic_square()

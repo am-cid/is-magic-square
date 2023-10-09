@@ -1,6 +1,5 @@
 from pathlib import Path
 from collections import Counter
-from sys import argv
 
 from utils.message import Log
 
