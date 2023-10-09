@@ -14,13 +14,10 @@ example magic square input text files can be found at `./test_data/`
 1. check whether input magic square is a valid magic square
 2. warns the user if the magic square input is not an **odd sided square** but continues execution
 3. print magic square to console
-4. highlight rows/columns/diagonals whose sum is **not equal** to the sum of the majority
-    - values part of **column, row, and/or diagonal** whose sum is not equal to the sum of the majority will have a different highlight color
-        - **blue** = part of 1 invalid column, row, or diagonal
-        - **yellow** = part of any combination of 2 invalid column, row, or diagonal
-        - **red** = part of all 3 invalid column, row, and diagonal
-        - these can help the user determine which value/s can be changed for the magic square to be valid
+4. highlight rows/columns/diagonals whose sum is **not equal** to the sum of the majority (invalid)
 5. has simple helpful `[INFO]` `[WARN]` and `[FATAL]` log logs for debugging
+
+*for more information please see The Wiki*
 
 ## Usage
 1. run `python app.py <commands>`
