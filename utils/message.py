@@ -19,8 +19,8 @@ class Log:
         while not critical errors, they suggest a need for attention or corrective action.
         """
         # ANSI escape code for yellow
-        _yellow = "\033[93m"
-        return f"{_yellow}[WARN]{cls._default}"
+        yellow = "\033[93m"
+        return f"{yellow}[WARN]{cls._default}"
     
     @classmethod
     def fatal(cls):
@@ -30,5 +30,5 @@ class Log:
         this may or may not lead to the termination of the program, depending on the developer.
         """
         # ANSI escape code for red
-        _red = "\033[91m"
-        return f"{_red}[FATAL]{cls._default}"
+        red = "\033[91m"
+        return f"{red}[FATAL]{cls._default}"

@@ -135,11 +135,6 @@ class Magic_Square:
             sums.update({f"row_{i+1}": row_sum})
             sums.update({f"column_{i+1}": column_sum})
 
-            # !DEBUG!
-            # print(f"\n{i=}")
-            # print(f"row_{i+1}: {row}; sum: {sum(row)}")
-            # print(f"column_{i+1}: {[row[i] for row in self._lines]}; sum: {sum([row[i] for row in self._lines])}")
-
             # only add 2 diagonals
             if i == row_column_count - 1: # final iteration
                 # first diagonal: /
@@ -152,12 +147,6 @@ class Magic_Square:
                 diagonal_2_sum = {f"diagonal_2": sum([row[j] for j, row in enumerate(self._lines)])}
                 sums.update(diagonal_2_sum)
 
-                # !DEBUG!
-                # print(f"\ndiagonal_1: {[row[j] for j, row in enumerate(self._lines)]}; sum: {sum([row[j] for j, row in enumerate(self._lines)])}")
-                # print(f"diagonal_2: {[row[len(row)-1-j] for j, row in enumerate(self._lines)]}; sum: {sum([row[len(row)-1-j] for j, row in enumerate(self._lines)])}\n")
-
-        # !DEBUG!
-        # print(f"{sums}\n")
         self._sums = sums
 
     def _define_text_color(self):
