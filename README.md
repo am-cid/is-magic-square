@@ -17,7 +17,7 @@ example magic square input text files can be found at `./test_data/`
 4. highlight rows/columns/diagonals whose sum is **not equal** to the sum of the majority (invalid)
 5. has simple helpful `[INFO]` `[WARN]` and `[FATAL]` log logs for debugging
 
-*for more information please see The Wiki*
+*for more information please see [The Wiki](https://github.com/am-cid/is-magic-square/wiki)*
 
 ## Usage
 1. run `python app.py <commands>`
