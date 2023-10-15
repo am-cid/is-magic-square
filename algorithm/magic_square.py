@@ -13,7 +13,7 @@ class Magic_Square:
     """
     def __init__(self, text_file: Path):
         if not text_file.exists():
-            print(f"{Log.fatal()} File not found: '{text_file}'")
+            Log.fatal(f"File not found: '{text_file}'")
             print("exiting...")
             exit(1)
 
@@ -105,10 +105,12 @@ class Magic_Square:
         column_count = len(self._lines[0])
 
         if row_count % 2 != 1 or column_count % 2 != 1:
-            print(f"{Log.warn()} '{text_file.name}' is not an odd sided square ({row_count}x{column_count})")
+            Log.warn(f"'{text_file.name}' is not an odd sided square ({row_count}x{column_count})")
         elif row_count != column_count:
-            raise ValueError(f"{Log.fatal()} '{text_file.name}' contains a {row_count}x{column_count} shape which is not a square")
-    
+            Log.fatal(f"'{text_file.name}' contains a {row_count}x{column_count} shape which is not a square")
+            print("exiting...")
+            exit(1)
+
     def _compute_sums(self):
         """
         compute the sum of each row, column, and diagonal of a 2d list
@@ -162,11 +164,11 @@ class Magic_Square:
         majority_sum, majority_sum_count = sum_counter[0]
 
         if len(set(self.sums)) == self.total_counts:
-            print(f"{Log.fatal()} Interesting! All your sums are unique values. You basically achieved an anti-magic square. Congrats I guess")
+            Log.fatal("Interesting! All your sums are unique values. You basically achieved an anti-magic square. Congrats I guess")
             majority_sum = None
         
         elif not majority_sum_count > self.total_counts/2:
-            print(f"{Log.fatal()} No majority (>50%) sum found. The majority sum found is '{majority_sum}' which is only {(majority_sum_count/self.total_counts)*100}% ({majority_sum_count}) of the total count of sums present ({self.total_counts})")
+            Log.fatal(f"No majority (>50%) sum found. The majority sum found is '{majority_sum}' which is only {(majority_sum_count/self.total_counts)*100}% ({majority_sum_count}) of the total count of sums present ({self.total_counts})")
 
         # create a list that's exactly the same size as the magic square being processed but with all values as '0'
         lines_color = [[0]*self.column_count for _ in range(self.row_count)]
@@ -226,11 +228,11 @@ class Magic_Square:
         padding = 10
 
         if self.is_magic_square:
-            print(f"{Log.info()} valid magic square! all sums are equal\n")
+            Log.info("valid magic square! all sums are equal\n")
         else:
-            print(f"{Log.fatal()} invalid magic square!", end=" ")
+            Log.fatal(f"invalid magic square!", end=" ")
             if self._majority_sum:
-                print(f"some sums are not equal to '{self._majority_sum}'\n'")
+                print(f"some sums are not equal to '{self._majority_sum}'\n")
             else:
                 print(r"all values are unique lol", end="\n\n")
 
