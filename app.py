@@ -1,6 +1,8 @@
 from pathlib import Path
 from sys import argv
+
 from algorithm.magic_square import Magic_Square
+from utils.message import Log
 
 def parse_args(argv: list[str] = None) -> tuple[Path, bool]:
     """
@@ -40,11 +42,11 @@ def parse_args(argv: list[str] = None) -> tuple[Path, bool]:
                 file_path = file
 
             else:
-                print(f"{Log.fatal()} '{file.as_posix()}' is not a valid path to a text file")
+                Log.fatal(f"'{file.as_posix()}' is not a valid path to a text file")
                 print("exiting...")
                 exit(1)          
         else:
-            print(f"{Log.fatal()} '{arg}' is not a valid argument")
+            Log.fatal(f"'{arg}' is not a valid argument")
             print("exiting...")
             exit(1)
 
