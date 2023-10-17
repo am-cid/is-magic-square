@@ -112,6 +112,10 @@ class Args:
         elif self._args["file_path"] and self._args["size"]:
             Log.fatal("Either pass an argument for [--file -f] or [--size -s], not both!")
             exit(1)
+        
+        if self._args["size"] is not None and self._args["size"] < 3:
+            Log.fatal(f"Minimum number of sides is 3. '{self._args['size']}' is less than 3")
+            exit(1)
 
 if __name__ == "__main__":
     test = Args(argv[1:])
