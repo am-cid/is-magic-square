@@ -1,5 +1,5 @@
 # is-magic-square
-**is-magic-square** is a simple algorithm to determine whether an input magic square through text file is a valid magic square
+**is-magic-square** is a simple algorithm to determine whether an input magic square through text file is a valid magic square. This can also generate a magic square and export it to a text file.
 
 ### example text file:
 ```
@@ -16,6 +16,7 @@ example magic square input text files can be found at `./test_data/`
 3. print magic square to console
 4. highlight rows/columns/diagonals whose sum is **not equal** to the sum of the majority (invalid)
 5. has simple helpful `[INFO]` `[WARN]` and `[FATAL]` log logs for debugging
+6. generate odd sided magic square, exports it to text file, and processes that text file as if it was an input magic square
 
 *for more information please see [The Wiki](https://github.com/am-cid/is-magic-square/wiki)*
 
