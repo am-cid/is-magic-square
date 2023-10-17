@@ -1,5 +1,6 @@
 from pathlib import Path
 from collections import Counter
+from datetime import datetime
 
 from utils.message import Log
 
@@ -11,20 +12,37 @@ class Magic_Square:
 
     This will take in any size square but will warn users if the size of the sides of the square is not odd (this will not affect whether the magic square is valid or not)
     """
-    def __init__(self, text_file: Path):
-        if not text_file.exists():
-            Log.fatal(f"File not found: '{text_file}'")
+    def __init__(self, args: dict[str : str|int|None]):
+        self._text_file = args["file_path"]
+
+        # if a size argument was passed, generate magic square
+        if args["size"]:
+            self._size = args["size"]
+
+            # _generate_magic_square modifies _generated_magic_square
+            self._generated_magic_square: list[list[int]]
+            self._generate_magic_square()
+
+            # this will replace the self._text_file with the generated magic square text file
+            self._export_magic_square()
+
+        if not self._text_file.exists():
+            Log.fatal(f"File not found: '{self._text_file}'")
             print("exiting...")
             exit(1)
 
-        # read_file modifies _lines
+        # _read_file modifies _lines
         self._lines: list[list[int]]
-        self._read_file(text_file)
+        self._read_file()
 
-        # compute sums modifies _sums and _is_magic_square
+        # _compute_sums modifies _sums and _is_magic_square
         self._sums: dict[str:int]
         self._is_magic_square: bool
         self._compute_sums()
+
+        # _compute_text_color modifies _text_color and _majority_sum
+        self._text_color: list[list[str]]
+        self._majority_sum: int
         self._define_text_color()
     
     @property
@@ -87,13 +105,14 @@ class Magic_Square:
         """
         return self.row_sums + self.column_sums + self.diagonal_sums
     
-    def _read_file(self, text_file: Path):
+    def _read_file(self):
         """
         takes a file path to a magic square txt file and computes the rows and columns based on data read from file
         input: Path to txt file
+
         modifies: self._lines
         """
-        with open(text_file, "r") as file:
+        with open(self._text_file, "r") as file:
             # outer comprehension outputs string for each line in the file
             # inner comprehension takes that ouputted string and turns it into a list by line.strip().split()
             # for each string that was split in this new list, turn those strings into ints
@@ -105,9 +124,10 @@ class Magic_Square:
         column_count = len(self._lines[0])
 
         if row_count % 2 != 1 or column_count % 2 != 1:
-            Log.warn(f"'{text_file.name}' is not an odd sided square ({row_count}x{column_count})")
+            Log.warn(f"'{self._text_file.name}' is not an odd sided square ({row_count}x{column_count})")
+
         elif row_count != column_count:
-            Log.fatal(f"'{text_file.name}' contains a {row_count}x{column_count} shape which is not a square")
+            Log.fatal(f"'{self._text_file.name}' contains a {row_count}x{column_count} shape which is not a square")
             print("exiting...")
             exit(1)
 
@@ -115,8 +135,8 @@ class Magic_Square:
         """
         compute the sum of each row, column, and diagonal of a 2d list
         input: list of list of ints where each list is a row
-        return: dict of str:int where str is the sum_name (row_1, column_2, etc) and int is the sum
-                bool where it's true if every sum is the same (a magic square) and false if it's not
+        
+        modifies: self.is_magic_square, self._sums
         """
         row_column_count = len(self._lines)
         sums = {}
@@ -157,6 +177,8 @@ class Magic_Square:
         white: default
         red: the row's OR column's sum is not equal to the majority's sum
         blue: value is part of both a row AND a column whose sum is not equal to the majority's sum
+
+        modifies: self._text_color, self._majority_sum
         """
         # counter returns a dictionary-like string representation of {value:int} where value is the value in my iterable and int is the number of times it occured
         # need to turn the default Counter string representation to dict
@@ -215,6 +237,91 @@ class Magic_Square:
             for line in lines_color
         ]
         self._majority_sum = majority_sum
+
+    def _generate_magic_square(self):
+        """
+        generates magic square from a given size
+
+        modifies: self._generated_magic_square
+        """
+        # create initial magic square
+        # if size==3, output should be [[0,0,0], [0,0,0], [0,0,0]]
+        lines = [[None for _ in range(self._size)] for _ in range(self._size)]
+
+        # put values into the initial magic square to make it a real magic square
+        values = [num for num in range(self._size*self._size)]
+        # starting position should be the middle column and first row
+        column = int(self._size / 2)
+        row = 0
+    
+        while values:
+            """
+            do staircase:
+                put value in position
+                put next value in top left from position
+                make sure the position wraps around (
+                    eg. box size 3, indices are from 0 to 2
+                        if position is 2,3 --convert-it-to--> 2,0
+                )
+                if there is already a value in the top left from position, go to bottom of position
+                keep going until all values are put
+            """
+            # wrap position around the box
+            while (row > self._size-1):
+                row -= self._size
+            while (row < 0):
+                row += self._size
+
+            while (column > self._size-1):
+                column -= self._size
+            while (column < 0):
+                column += self._size
+
+            # put value into position if there is no value there already
+            if lines[row][column] is None:
+                lines[row][column] = values.pop(0)
+            
+            # go to bottom of position and place the value there instead if original position is not empty
+            else:
+                row += 2
+                column -= 1
+
+                # wrap position around the box
+                while (row > self._size-1):
+                    row -= self._size
+                while (row < 0):
+                    row += self._size
+
+                while (column > self._size-1):
+                    column -= self._size
+                while (column < 0):
+                    column += self._size
+
+                lines[row][column] = values.pop(0)
+
+            column += 1    
+            row -=1
+        
+        self._generated_magic_square = lines
+    
+    def _export_magic_square(self):
+        """
+        exports the generated magic square into a text file
+        the text file will be in:
+        ./generated_magic_squares/magic_square_{datetime.now()}.txt
+
+        modifies: self._text_file
+        """
+        text_file_path = Path.cwd() / 'generated_magic_squares' / f'MAGIC_SQUARE_{datetime.now().strftime(r"%Y%m%d_%H%M%S%f")}.txt'
+        Path.mkdir(text_file_path.parent, exist_ok=True)
+
+        with open (text_file_path, 'w') as file:
+            for row in self._generated_magic_square:
+                for value in row:
+                    file.write(f"{value} ")
+                file.write("\n")
+        
+        self._text_file = text_file_path
 
     def print_magic_square(self):
         """
