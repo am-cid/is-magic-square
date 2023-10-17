@@ -84,7 +84,14 @@ class Args:
                     exit(1)
 
                 if value.isdecimal():
-                    self._args.update({"size":int(value)})
+                    value = int(value)
+                    
+                    if (value % 2) == 1:
+                        self._args.update({"size":value})
+
+                    else:
+                        Log.fatal(f"'{value}' is an even number. Please input an odd number (minimum: 3)")
+                        exit(1)
                 
                 else:
                     Log.fatal(f"'{value}' is not a valid size argument. Please avoid negative ('-') and decimal points ('.')")
