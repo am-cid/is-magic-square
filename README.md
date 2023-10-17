@@ -32,6 +32,8 @@ example magic square input text files can be found at `./test_data/`
     - takes no arguments
     - default behavior if this command is not indicated is the magic square will not be printed to console
         - `[INFO]` `[WARN]` and `[FATAL]` logs will still be printed though
+3. `--size | -s number`
+    - accepts only positive odd numbers; minimum of 3
 
 ### Credits
 - Masapol, Cid (Leader)
